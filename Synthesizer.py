@@ -4,8 +4,8 @@
 # 
 from collections import Counter
 
-def deCode(_binary_stream):
-    # Step 1: Store the # of times we observe/feel-neuro/sense each thang
+def analyze_frequency_bit_pattern(_binary_stream):
+    # Step 1: Store the # of times we capture
     bytes = Counter(_binary_stream)
 
     # Step 2: Sort the bytes by popularity
