@@ -3,7 +3,6 @@ one that synthesizes a plain text file.
 
 This is authored by Jacob Bullard Computer Security Spring 2023"""
 
-from collections import Counter
 from Synthesizer import analyze_frequency_bit_pattern
 
 # In the beginning
@@ -61,17 +60,16 @@ for byte in analyze_frequency_bit_pattern(encoded_data):
 
 print()
 
-Counter(key_list)
 
-key_list_sorted = dict(sorted(key_list.items(), key=lambda x: x[1], reverse=True))
 
 
 # This function is MAGIC
+# seems like it should apply the key to the text
 for b in byte_list:
 
     #if b matches with another b
     print("cipher-secret: " + str(byte_list.index(b)) + " " + b) 
-    print("key: " + str(key_list_sorted.index(b)) + " " + str(key_list_sorted[key_list_sorted.index(b)]))
+    print("key: " + str(key_list.index(b)) + " " + str(key_list[key_list.index(b)]))
 
 
 
