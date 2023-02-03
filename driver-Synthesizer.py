@@ -3,6 +3,8 @@ one that synthesizes a plain text file.
 
 This is authored by Jacob Bullard Computer Security Spring 2023"""
 
+cipher_key_length = 7
+
 from Synthesizer import analyze_frequency_bit_pattern
 
 # In the beginning
@@ -14,40 +16,26 @@ encoded_data = gibberish.read() # if you only wanted to read 512 bytes, do .read
 # Let's hope this thread is actually helpful. 
 # https://stackoverflow.com/questions/6787233/python-how-to-read-bytes-from-file-and-save-it
 
-hacked_key =    b"SPWOEKFMBZGDXVIYACQLHJRTUN" 
-
-frequency_key = b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
-#
+#                #
 #  W S E K O F P #
-#
+#                #
 #  A E I N O S T #
+#                #
+#  B D E F O M Y #
 
-
-
-
-decoded_message = ""
-
+print("At this point in the code, we have read the ciphertext, as binary into a list of bytes, here are those bytes: ")
+print()
 print(str(encoded_data))
-
 print()
 
-# this statement here is beautiful
-# I wanna see how the computers memory spins
-num_bytes =len(analyze_frequency_bit_pattern(encoded_data))
-
-print(str(num_bytes) + " bytes found\n")
+ordered_gibberish_patterns = []
 
 population_size = 0
-byte_list = []
-key_list = []
 
-for byte in analyze_frequency_bit_pattern(frequency_key):
-    key_list.append(str(byte))
-
+# this part of code performs frequency analysis on our gibberish
 for byte in analyze_frequency_bit_pattern(encoded_data):
-    byte_list.append(str(byte))
+    ordered_gibberish_patterns.append(str(byte))
     population_size = population_size + analyze_frequency_bit_pattern(encoded_data).get(byte)
-    print("Byte: " + str(byte) + " ocurred " + str(analyze_frequency_bit_pattern(encoded_data).get(byte)) + " times")
     
 print()
 
@@ -55,23 +43,71 @@ for byte in analyze_frequency_bit_pattern(encoded_data):
     # THE ENCODING HAPPENING HERE APPEARS TO BE ASCII ASSUMED
     # WHAT PART OF AN OPERATING SYSTEM ARCHITECTURE NEEDS TO 
     # KNOW 
-    print("Byte: " + str(byte) + " had frequency " + str(int(str(analyze_frequency_bit_pattern(encoded_data).get(byte)))*100/ +
+   
+    print( "Byte: " + str(byte) + " ocurred " + str(analyze_frequency_bit_pattern(encoded_data).get(byte)) + " times " +
+    "Byte: " + str(byte) + " had frequency " + str(int(str(analyze_frequency_bit_pattern(encoded_data).get(byte)))*100/ +
     population_size))
 
 print()
 
+# this statement here is beautiful
+# I wanna see how the computers memory spins
+num_bytes =len(analyze_frequency_bit_pattern(encoded_data))
+print(str(num_bytes) + " 'different' patt3rns found\n")
+
+print("Upon further analysis of the bytes(lowest level storeable patterns)")
+print("There was a pattern of 7 consecutive bytes. This is something worth investigating.")
+print("The bytes in the ciper text 'XISZMNM' appear twice.")
+print()
+print("There was a pattern of 4 consecutive bytes. This is something worth investigating.")
+print("The bytes in the ciper text 'VFGO' appear twice.")
+
+print()
+#The key length is either 7 or 24
+
+relative_frequency_ciper = b"SPWOEKFMBZGDXVIYACQLHJRTUN"
+relative_frequency_ciper2 =b"MEODFYBZWKLVGPYAQIHSJNCXUT"
+
+relative_frequency_ciper_7kATTACK = b"SPWOEKF"
+relative_frequency_ciper2_7kATTACK =b"MEODFYB"
+
+relative_frequency_ciper_24k =   b"SPWOEKFMBZGDXVIYACQLHJRT"
+#relative_frequency_key          b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
+relative_frequency_ciper_24k =   b"MEODFYBZWKLVGPYAQIHSJNCX"
+#relative_frequency_key          b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
+relative_frequency_ciper2_24k =  b"MOFYZWKLVGPYABDEQIHSJNCX"
+relative_frequency_key =         b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
+
+    
+print("The relative frequency of our ciphertext looks like")
+print(relative_frequency_ciper) 
+
+print()
+
+print("The relative frequency of bytes looks like")
+#frequency_key here is a pre-generated 'expected' pattern of 42 bits to match 
+print(relative_frequency_key) 
 
 
+# for byte in analyze_frequency_bit_pattern(encoded_data):
+#     # THE ENCODING HAPPENING HERE APPEARS TO BE ASCII ASSUMED
+#     # WHAT PART OF AN OPERATING SYSTEM ARCHITECTURE NEEDS TO 
+#     # KNOW 
+
+for b in encoded_data:
+    print(b)
+   
+#     print( "Byte: " + str(byte) + " changed to " + str(analyze_frequency_bit_pattern(encoded_data).get(byte)))
+decoded_message = ""
+
+print()
 
 # This function is MAGIC
 # seems like it should apply the key to the text
-for b in byte_list:
-
-    #if b matches with another b
-    print("cipher-secret: " + str(byte_list.index(b)) + " " + b) 
-    print("key: " + str(key_list.index(b)) + " " + str(key_list[key_list.index(b)]))
-
-
+# for b in encoded_data:
+#     #replace byte in cipher text with a good guess and then run the 
+#     print("cipher-pattern: " + str(b)) 
+#     print("changed-to: " + str(key_list.index(b)) + " " + str(key_list[key_list.index(b)]))
 
 print()
     
@@ -102,3 +138,23 @@ block_text = """
 ######################"""
 #print(block_text) - wow it works
 print("Population Size or Sample Amount or Time Duration or Sensor Measurement: " + str(population_size))
+
+
+def longest_repeated_substring(text):
+    n = len(text)
+    suffixes = sorted([text[i:] for i in range(n)])
+    lrs = ""
+    for i in range(n - 1):
+        lcp = common_prefix(suffixes[i], suffixes[i + 1])
+        if len(lcp) > len(lrs):
+            lrs = lcp
+    return lrs
+
+def common_prefix(a, b):
+    i = 0
+    while i < min(len(a), len(b)) and a[i] == b[i]:
+        i += 1
+    return a[:i]
+
+text = "WCBSIOOPAYVDEZWJYKOR"
+print("Longest repeating substring:", longest_repeated_substring(text))

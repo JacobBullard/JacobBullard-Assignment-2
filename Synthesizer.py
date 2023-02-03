@@ -5,7 +5,8 @@
 from collections import Counter
 
 def analyze_frequency_bit_pattern(_binary_stream):
-    # Step 1: Store the # of times we capture
+    # Step 1: Store the # of MeM Configs, mem capacity, Object, 
+    #  we capture. Clock and physics come into play att
     bytes = Counter(_binary_stream)
 
     # Step 2: Sort the bytes by popularity
