@@ -36,16 +36,22 @@ population_size = 0
 for byte in analyze_frequency_bit_pattern(encoded_data):
     ordered_gibberish_patterns.append(str(byte))
     population_size = population_size + analyze_frequency_bit_pattern(encoded_data).get(byte)
-    
 print()
+
+# encrypt with keys here
+#
+# 
+#
+#
+
+key = "yz"
 
 for byte in analyze_frequency_bit_pattern(encoded_data):
     # THE ENCODING HAPPENING HERE APPEARS TO BE ASCII ASSUMED
     # WHAT PART OF AN OPERATING SYSTEM ARCHITECTURE NEEDS TO 
     # KNOW 
    
-    print( "Byte: " + str(byte) + " ocurred " + str(analyze_frequency_bit_pattern(encoded_data).get(byte)) + " times " +
-    "Byte: " + str(byte) + " had frequency " + str(int(str(analyze_frequency_bit_pattern(encoded_data).get(byte)))*100/ +
+    print( "Byte: " + str(byte) + " had frequency " + str(int(str(analyze_frequency_bit_pattern(encoded_data).get(byte)))*100/ +
     population_size))
 
 print()
@@ -55,52 +61,63 @@ print()
 num_bytes =len(analyze_frequency_bit_pattern(encoded_data))
 print(str(num_bytes) + " 'different' patt3rns found\n")
 
-print("Upon further analysis of the bytes(lowest level storeable patterns)")
-print("There was a pattern of 7 consecutive bytes. This is something worth investigating.")
-print("The bytes in the ciper text 'XISZMNM' appear twice.")
-print()
-print("There was a pattern of 4 consecutive bytes. This is something worth investigating.")
-print("The bytes in the ciper text 'VFGO' appear twice.")
+# print("Upon further analysis of the binary;")
+# print("A pattern of 7 consecutive bytes detected.") 
+# print("The bytes in the ciper text 'XISZMNM' appear twice.")
+# print()
+# print("There was a pattern of 4 consecutive bytes detected.")
+# print("The bytes in the ciper text 'VFGO' appear twice.")
 
 print()
-#The key length is either 7 or 24
+#The key length is 7
 
-relative_frequency_ciper = b"SPWOEKFMBZGDXVIYACQLHJRTUN"
-relative_frequency_ciper2 =b"MEODFYBZWKLVGPYAQIHSJNCXUT"
+relative_frequency_ciper_7kATTACK  =  b"SPWOEKF"
+relative_frequency_key             =  b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
 
-relative_frequency_ciper_7kATTACK = b"SPWOEKF"
-relative_frequency_ciper2_7kATTACK =b"MEODFYB"
-
-relative_frequency_ciper_24k =   b"SPWOEKFMBZGDXVIYACQLHJRT"
-#relative_frequency_key          b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
-relative_frequency_ciper_24k =   b"MEODFYBZWKLVGPYAQIHSJNCX"
-#relative_frequency_key          b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
-relative_frequency_ciper2_24k =  b"MOFYZWKLVGPYABDEQIHSJNCX"
-relative_frequency_key =         b"ETAOINSRHDLUCMFYWGPBVKXQJZ"
-
-    
 print("The relative frequency of our ciphertext looks like")
-print(relative_frequency_ciper) 
+#print(relative_frequency_ciper) 
 
 print()
-
 print("The relative frequency of bytes looks like")
 #frequency_key here is a pre-generated 'expected' pattern of 42 bits to match 
-print(relative_frequency_key) 
-
+print(relative_frequency_key)
+print("One could imply substitution of every cipher text")  
+print(relative_frequency_ciper_7kATTACK)
 
 # for byte in analyze_frequency_bit_pattern(encoded_data):
 #     # THE ENCODING HAPPENING HERE APPEARS TO BE ASCII ASSUMED
 #     # WHAT PART OF AN OPERATING SYSTEM ARCHITECTURE NEEDS TO 
 #     # KNOW 
 
-for b in encoded_data:
-    print(b)
-   
-#     print( "Byte: " + str(byte) + " changed to " + str(analyze_frequency_bit_pattern(encoded_data).get(byte)))
-decoded_message = ""
+
+### Decrypt / Decode here 
+decrypted_data = []
+decrypted_string =""
+for function_one in encoded_data:
+
+    found_match = False
+
+    for function_two in relative_frequency_ciper_7kATTACK:
+        if function_one == function_two:
+            found_match = True
+            print("Input: " + str(function_one) + " detected")
+            decrypted_data.append(str(relative_frequency_key[relative_frequency_ciper_7kATTACK.index(function_one)]))
+            #magic hash here
+            decrypted_string = decrypted_string + str(relative_frequency_key[relative_frequency_ciper_7kATTACK.index(function_one)])
+            print("substituted with " + str(relative_frequency_key[relative_frequency_ciper_7kATTACK.index(function_one)]))
+            break
+    if found_match == False:
+        decrypted_string = decrypted_string + str(byte)
+        found_match = False
+    
+    
+
 
 print()
+
+print("New Message: ")
+
+print(str(decrypted_string))
 
 # This function is MAGIC
 # seems like it should apply the key to the text
@@ -138,6 +155,7 @@ block_text = """
 ######################"""
 #print(block_text) - wow it works
 print("Population Size or Sample Amount or Time Duration or Sensor Measurement: " + str(population_size))
+print("Population Size or Sample Amount or Time Duration or Sensor Measurement: " + str(len(decrypted_string)))
 
 
 def longest_repeated_substring(text):
