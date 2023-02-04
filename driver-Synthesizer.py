@@ -38,13 +38,20 @@ for byte in analyze_frequency_bit_pattern(encoded_data):
     population_size = population_size + analyze_frequency_bit_pattern(encoded_data).get(byte)
 print()
 
+# encrypt with keys here
+#
+# 
+#
+#
+
+key = "yz"
+
 for byte in analyze_frequency_bit_pattern(encoded_data):
     # THE ENCODING HAPPENING HERE APPEARS TO BE ASCII ASSUMED
     # WHAT PART OF AN OPERATING SYSTEM ARCHITECTURE NEEDS TO 
     # KNOW 
    
-    print( "Byte: " + str(byte) + " ocurred " + str(analyze_frequency_bit_pattern(encoded_data).get(byte)) + " times " +
-    "Byte: " + str(byte) + " had frequency " + str(int(str(analyze_frequency_bit_pattern(encoded_data).get(byte)))*100/ +
+    print( "Byte: " + str(byte) + " had frequency " + str(int(str(analyze_frequency_bit_pattern(encoded_data).get(byte)))*100/ +
     population_size))
 
 print()
@@ -54,12 +61,12 @@ print()
 num_bytes =len(analyze_frequency_bit_pattern(encoded_data))
 print(str(num_bytes) + " 'different' patt3rns found\n")
 
-print("Upon further analysis of the binary;")
-print("A pattern of 7 consecutive bytes detected.") 
-print("The bytes in the ciper text 'XISZMNM' appear twice.")
-print()
-print("There was a pattern of 4 consecutive bytes detected.")
-print("The bytes in the ciper text 'VFGO' appear twice.")
+# print("Upon further analysis of the binary;")
+# print("A pattern of 7 consecutive bytes detected.") 
+# print("The bytes in the ciper text 'XISZMNM' appear twice.")
+# print()
+# print("There was a pattern of 4 consecutive bytes detected.")
+# print("The bytes in the ciper text 'VFGO' appear twice.")
 
 print()
 #The key length is 7
